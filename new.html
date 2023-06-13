@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Générateur de mots de passe</title>
+    <style>
+        body {
+            transition: background-color 0.5s ease;
+        }
+    </style>
+    <script>
+        function getRandomNum(lbound, ubound) {
+            return Math.floor(Math.random() * (ubound - lbound)) + lbound;
+        }
+
+        function getRandomChar(number, lower, upper, other, extra) {
+            var numberChars = "0123456789";
+            var lowerChars = "abcdefghijklmnopqrstuvwxyz";
+            var upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            var otherChars = "`~!@#$%^&*()-_=+[{]}\\|;:'\",<.>/? ";
+            var charSet = extra;
+            if (number == true)
+                charSet += numberChars;
+            if (lower == true)
+                charSet += lowerChars;
+            if (upper == true)
+                charSet += upperChars;
+            if (other == true)
+                charSet += otherChars;
+            return charSet.charAt(getRandomNum(0, charSet.length));
+        }
+
+        function getPassword(length, extraChars, firstNumber, firstLower, firstUpper, firstOther,
+            latterNumber, latterLower, latterUpper, latterOther) {
+            var rc = "";
+            if (length > 0)
+                rc = rc + getRandomChar(firstNumber, firstLower, firstUpper, firstOther, extraChars);
+            for (var idx = 1; idx < length; ++idx) {
+                rc = rc + getRandomChar(latterNumber, latterLower, latterUpper, latterOther, extraChars);
+            }
+            document.body.style.backgroundColor = generateRandomColor();
+            document.getElementsByName('password')[0].value = rc;
+        }
+
+        function generateRandomColor() {
+            var color = "#";
+            var characters = "0123456789ABCDEF";
+            for (var i = 0; i < 6; i++) {
+                var randomIndex = Math.floor(Math.random() * characters.length);
+                color += characters.charAt(randomIndex);
+            }
+            return color;
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Générateur de mots de passe</h1>
+
+    <form name="myform">
+        <table border="200">
+            <tr>
+                <td>Premier caractère</td>
+                <td>
+                    <input type="checkbox" name="firstNumber" checked> Chiffres
+                    <input type="checkbox" name="firstLower" checked> Minuscules<br>
+                    <input type="checkbox" name="firstUpper" checked> Majuscules
+                    <input type="checkbox" name="firstOther"> Autres
+                </td>
+            </tr>
+            <tr>
+                <td>Caractères suivants</td>
+                <td>
+                    <input type="checkbox" name="latterNumber" checked> Chiffres
+                    <input type="checkbox" name="latterLower" checked> Minuscules<br>
+                    <input type="checkbox" name="latterUpper" checked> Majuscules
+                    <input type="checkbox" name="latterOther"> Autres
+                </td>
+            </tr>
+            <tr>
+                <td>Taille du mot de passe</td>
+                <td>
+                    <input type="text" name="passwordLength" value="6" size="3">
+                </td>
+            </tr>
+            <tr>
+                <td>Autres caractères</td>
+                <td>
+                    <input type="text" name="extraChars" size="20">
+                </td>
+            </tr>
+        </table>
+
+        <br>
+
+        <input type="button" value="Générateur de mots de passe" onClick="getPassword(parseInt(document.myform.passwordLength.value), document.myform.extraChars.value,
+            document.myform.firstNumber.checked, document.myform.firstLower.checked,
+            document.myform.firstUpper.checked, document.myform.firstOther.checked,
+            document.myform.latterNumber.checked, document.myform.latterLower.checked,
+            document.myform.latterUpper.checked, document.myform.latterOther.checked);">
+    </form>
+
+    <br> Votre mot de passe:
+    <input type="text" name="password" size="20">
+
+</body>
+
+</html>
